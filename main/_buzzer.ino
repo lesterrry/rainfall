@@ -8,6 +8,10 @@ class Buzzer {
       tone(_pin, frequency, duration);
     }
 
+    void silent() {
+      noTone(_pin);
+    }
+
     void beep(uint8_t frequencyDegree, uint8_t toneDuration = 25) {
       unsigned int frequency = frequencyDegree * 50;
       tone(_pin, frequency, toneDuration);
@@ -35,8 +39,8 @@ class Buzzer {
       sound(600, 200);
     }
 
-    void playAlert() {
-      sound(550, 1000);
+    void playAlert(bool higher = false) {
+      sound(higher ? 800 : 550);
     }
 
   private:

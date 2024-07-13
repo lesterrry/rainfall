@@ -3,15 +3,21 @@ Relay relay(RELAY_PIN);
 Knob knob(ENC_CLK_PIN, ENC_DT_PIN, ENC_SW_PIN);
 Buzzer buzzer(BUZZER_PIN);
 Display display(LED_ADDRESS, LED_WIDTH, LED_HEIGHT);
+Timer timer(DEFAULT_TIMER_VALUE, MAX_TIMER_VALUE);
 
-const uint16_t DEFAULT_TIMER_VALUE = 5400;  // 1.5h
+unsigned long lastMillis = 0;
+bool alertHigh = false;
 
-unsigned long timer = 0;
-uint16_t elapsedValue = 0; 
+void printTimeLeft() {
+  display.clear();
+  display.print(timer.timeLeft(), 0, 0);
+}
 
-// void handleKnobRotation(bool direction) {
-
-// }
+void resetTimer() {
+  buzzer.silent();
+  display.setBacklight();
+  relay.on();
+}
 
 void setup() {
   pinMode(ENC_VCC_PIN, OUTPUT);
@@ -37,32 +43,44 @@ void setup() {
 		}
 	#endif
 
+  relay.on();
+
   display.clear();
 
   logger.print(F("Entering loop..."));
 }
   
 void loop() {
-  unsigned long current = millis();
+  unsigned long currentMillis = millis();
 
   knob.update();
 
   if (knob.isRight()) {
     buzzer.beep(4);
-
+    if (timer.adjust(300) > 0) resetTimer();
+    printTimeLeft();
   } else if (knob.isLeft()) {
     buzzer.beep(3);
-
+    timer.adjust(-300);
+    printTimeLeft();
   } else if (knob.isClick()) {
     buzzer.beep(6, 100);
 
   }
 
-  if (current - timer >= 1000) {
-    elapsedValue++;
-    
-    display.print(String(elapsedValue), 0, 0);
+  if (currentMillis - lastMillis >= 1000) {
+    if (!timer.tick()) {  // timer has finished
+      relay.off();
+      display.clear();
+      display.print("DONE", 0, 0);
+      
+      buzzer.playAlert(alertHigh);
+      display.setBacklight(alertHigh);
+      alertHigh = !alertHigh; 
+    } else {
+      printTimeLeft();
+    }
 
-    timer = current;
+    lastMillis = currentMillis;
   }
 }

@@ -16,6 +16,10 @@ public:
   void clear() {
     _display.clear();
   }
+
+  void setBacklight(bool enabled = true) {
+    _display.setBacklight(enabled);
+  }
 private:
   LiquidCrystal_I2C _display;
 };
