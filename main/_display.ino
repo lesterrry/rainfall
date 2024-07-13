@@ -12,6 +12,10 @@ public:
     if (x != -1 || y != -1) _display.setCursor(x, y);
     _display.print(text);
   }
+
+  void clear() {
+    _display.clear();
+  }
 private:
   LiquidCrystal_I2C _display;
 };

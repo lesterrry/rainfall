@@ -35,6 +35,10 @@ class Buzzer {
       sound(600, 200);
     }
 
+    void playAlert() {
+      sound(550, 1000);
+    }
+
   private:
     int _pin;
 };
