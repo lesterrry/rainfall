@@ -26,7 +26,7 @@ class Knob {
     }
 
     bool isDown() {
-      return _encoder.isHold();
+      return _encoder.isHolded();
     }
 
     bool isAnyTurn() {
