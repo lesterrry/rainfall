@@ -5,9 +5,7 @@ Interactive sleep-timer relay
 me@aydar.media
 ******************************/
 
-#define DEBUG 1
-
-#define VERSION "0.1.0"
+#define DEBUG 0
 
 // #define DEBUG_TONES
 // #define CLEAR_EEPROM
