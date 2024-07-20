@@ -22,6 +22,7 @@ me@aydar.media
 #define EEPROM_INITIAL_TIMER_VALUE_ADDRESS 0
 #define DEFAULT_TIMER_VALUE                5400  // 1.5h
 #define MAX_TIMER_VALUE                    18000 // 5h
+#define MAX_ALERT_TIMES                    120
 
 #include <cmath>
 #include <EEPROM.h>

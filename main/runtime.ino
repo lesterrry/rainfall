@@ -10,6 +10,7 @@ MemoryEntry memorizedInitialSecondsLeft(EEPROM_INITIAL_TIMER_VALUE_ADDRESS);
 
 unsigned long lastMillis = 0;
 bool alertHigh = false;
+uint16_t alertTimesPlayed = 0;
 
 void printRelayStatus() {
   display.print(relay.getState() ? '|' : 'O', 15, 0);
@@ -26,6 +27,7 @@ void resetTimer() {
   buzzer.silent();
   display.setBacklight();
   relay.on();
+  alertTimesPlayed = 0;
 }
 
 void setup() {
@@ -108,9 +110,10 @@ void loop() {
     if (!timer.tick()) {  // timer has finished
       relay.off();
       
-      buzzer.playAlert(alertHigh);
+      alertTimesPlayed > MAX_ALERT_TIMES ? buzzer.silent() : buzzer.playAlert(alertHigh);
       display.setBacklight(alertHigh);
-      alertHigh = !alertHigh; 
+      alertHigh = !alertHigh;
+      alertTimesPlayed++;
     }
 
     bar.tick();
