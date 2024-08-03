@@ -7,8 +7,8 @@ me@aydar.media
 
 #define DEBUG 0
 
-// #define DEBUG_TONES
-// #define CLEAR_EEPROM
+#undef DEBUG_TONES
+#undef CLEAR_EEPROM
 
 #define RELAY_PIN                          7
 #define LED_ADDRESS                        0x27
